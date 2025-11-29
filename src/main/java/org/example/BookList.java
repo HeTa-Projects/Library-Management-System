@@ -1,7 +1,6 @@
 package org.example;
 import java.util.Scanner;
 
-
 public class BookList {
     BookInfo first;
     BookInfo last;
@@ -11,8 +10,8 @@ public class BookList {
         last = null;
     }
 
-    void addBook(String bookName, String authorName, String bookStatus, int barcodeNumber, int publicationYear, int numberOfPages) {
-        BookInfo newBook = new BookInfo(bookName, authorName, bookStatus, barcodeNumber, publicationYear, numberOfPages);
+    void addBook(String bookName, String authorName, int numberOfPages, String bookStatus, int barcodeNumber, int publicationYear) {
+        BookInfo newBook = new BookInfo(bookName, authorName, numberOfPages, bookStatus, barcodeNumber, publicationYear);
         if (first == null) {
             first = newBook;
             last = newBook;
@@ -45,7 +44,8 @@ public class BookList {
             temp = temp.forward;
         }
         System.out.println("Barcode number not found.");
-        }
+    }
+
     void searchBook(){
         BookInfo temp = first;
         if(temp == null){
@@ -61,9 +61,15 @@ public class BookList {
         if(filter.equals("1")){
             System.out.println("Enter the book name");
             String bookname = input.nextLine();
+
             while(temp!=null){
-                if(bookname.equals(temp.bookName)){
-                    System.out.println("Book Name :" + temp.bookName + "\nAuthor Name :" + temp.authorName + "\nBook Status : " + temp.bookStatus + "\nBarcode Number : " + temp.barcodeNumber + "\nNumber Of Pages : " + temp.numberOfPages + "\nPublication Year : " + temp.publicationYear);
+                if(bookname.equalsIgnoreCase(temp.bookName)){
+                    System.out.println("Book Name :" + temp.bookName +
+                            "\nAuthor Name :" + temp.authorName +
+                            "\nNumber Of Pages : " + temp.numberOfPages +
+                            "\nBook Status : " + temp.bookStatus +
+                            "\nBarcode Number : " + temp.barcodeNumber +
+                            "\nPublication Year : " + temp.publicationYear);
                     return;
                 }
                 temp = temp.forward;
@@ -72,9 +78,15 @@ public class BookList {
         else if(filter.equals("2")){
             System.out.println("Enter the author's name");
             String authorname = input.nextLine();
+
             while(temp != null){
-                if(authorname.equals(temp.authorName)){
-                    System.out.println("Book Name :" + temp.bookName + "\nAuthor Name :" + temp.authorName + "\nBook Status : " + temp.bookStatus + "\nBarcode Number : " + temp.barcodeNumber + "\nNumber Of Pages : " + temp.numberOfPages + "\nPublication Year : " + temp.publicationYear);
+                if(authorname.equalsIgnoreCase(temp.authorName)){
+                    System.out.println("Book Name :" + temp.bookName +
+                            "\nAuthor Name :" + temp.authorName +
+                            "\nNumber Of Pages : " + temp.numberOfPages +
+                            "\nBook Status : " + temp.bookStatus +
+                            "\nBarcode Number : " + temp.barcodeNumber +
+                            "\nPublication Year : " + temp.publicationYear);
                     return;
                 }
                 temp = temp.forward;
@@ -83,9 +95,15 @@ public class BookList {
         else if(filter.equals("3")){
             System.out.println("Enter the barcode number");
             String barcodenumber = input.nextLine();
+
             while(temp != null){
-                if(barcodenumber.equals(temp.barcodeNumber)){
-                    System.out.println("Book Name :" + temp.bookName + "\nAuthor Name :" + temp.authorName + "\nBook Status : " + temp.bookStatus + "\nBarcode Number : " + temp.barcodeNumber + "\nNumber Of Pages : " + temp.numberOfPages + "\nPublication Year : " + temp.publicationYear);
+                if(barcodenumber.equals("" + temp.barcodeNumber)){
+                    System.out.println("Book Name :" + temp.bookName +
+                            "\nAuthor Name :" + temp.authorName +
+                            "\nNumber Of Pages : " + temp.numberOfPages +
+                            "\nBook Status : " + temp.bookStatus +
+                            "\nBarcode Number : " + temp.barcodeNumber +
+                            "\nPublication Year : " + temp.publicationYear);
                     return;
                 }
                 temp=temp.forward;
@@ -97,7 +115,7 @@ public class BookList {
         BookInfo temp = first;
 
         while (temp != null) {
-            System.out.println("Book Name :" + temp.bookName + "\nAuthor Name :" + temp.authorName + "\nBook Status : " + temp.bookStatus + "\nBarcode Number : " + temp.barcodeNumber + "\nNumber Of Pages : " + temp.numberOfPages + "\nPublication Year : " + temp.publicationYear);
+            System.out.println("Book Name :" + temp.bookName + "\nAuthor Name :" + temp.authorName + "\nNumber Of Pages : " + temp.numberOfPages + "\nBook Status : " + temp.bookStatus + "\nBarcode Number : " + temp.barcodeNumber + "\nPublication Year : " + temp.publicationYear);
             temp = temp.forward;
         }
     }

@@ -1,5 +1,4 @@
 package org.example;
-
 import java.awt.print.Book;
 
 public class BookInfo {
@@ -8,17 +7,18 @@ public class BookInfo {
 
     String bookName;
     String authorName;
+    int numberOfPages;
     String bookStatus;
     int barcodeNumber;
     int publicationYear;
-    int numberOfPages;
 
-    BookInfo(String bookName, String authorName, String bookStatus, int barcodeNumber, int publicationYear,int numberOfPages) {
+
+    BookInfo(String bookName, String authorName, int numberOfPages, String bookStatus, int barcodeNumber, int publicationYear) {
         this.bookName = bookName;
         this.authorName = authorName;
+        this.numberOfPages = numberOfPages;
         this.bookStatus = bookStatus;
         this.barcodeNumber = barcodeNumber;
-        this.numberOfPages = numberOfPages;
         this.publicationYear = publicationYear;
         forward = null;
     }
