@@ -1,26 +1,23 @@
 package org.example;
 
-public class Main {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/Main.fxml"));
+        Scene scene = new Scene(root, 600, 400);
+        stage.setTitle("Kütüphane Sistemi");
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public static void main(String[] args) {
-        BookList bl = new BookList();
-
-        bl.addBook("Tutunamayanlar", "Oğuz Atay", 724, "In Library", 123456789, 1972);
-        bl.printList();
-        System.out.println("--------------------------------");
-        bl.addBook("Hayvan Çiftliği", "George Orwell", 386, "In Library", 13579, 1980);
-        bl.printList();
-        System.out.println("--------------------------------");
-        bl.addBook("Suç Ve Ceza", "Fyodor Mihailoviç Dostoyevski", 688, "Not Available", 233444, 1866 );
-        bl.printList();
-
-
-        System.out.println("--------------------------------");
-        //bl.removeBook(123456789);
-        //bl.printList();
-        bl.searchBook();
-
-
-        FileOperations.saveAllBooks(bl);
-        //bl.printList();
+        launch(args);
     }
 }

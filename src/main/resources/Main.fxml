@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.MainController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <children>
+                <Label text="Kütüphane Sistemi" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <MenuButton fx:id="accountMenu" mnemonicParsing="false">
+                    <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true" pickOnBounds="true">
+                            <image>
+                                <Image url="@images/avatar.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+
+                    <items>
+                        <MenuItem text="Giriş Yap" onAction="#onLoginClick"/>
+                        <MenuItem text="Kayıt Ol"  onAction="#onRegisterClick"/>
+                    </items>
+                </MenuButton>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="20.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <children>
+
+                <HBox spacing="10.0">
+                    <children>
+                        <VBox spacing="5">
+                            <children>
+                                <Label text="Filtre Seçin"/>
+                                <ComboBox fx:id="cmbFilter" prefWidth="150.0"/>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="5">
+                            <children>
+                                <Label text="Arama"/>
+                                <TextField fx:id="txtQuery"
+                                           prefWidth="300.0"
+                                           promptText="Kitap adı, yazar adı veya barkod..." />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER">
+                    <children>
+                        <Button fx:id="btnSearch"
+                                text="Ara"
+                                onAction="#onSearchClick"
+                                prefWidth="120.0"/>
+                    </children>
+                </HBox>
+
+            </children>
+        </VBox>
+    </center>
+
+
+</BorderPane>

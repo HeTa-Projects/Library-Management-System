@@ -59,4 +59,29 @@ public class FileOperations {
             System.out.println("Dosyaya yazma hatası: " + e.getMessage());
         }
     }
+
+    void readOnlySearched(String query){
+        try {
+            FileReader fr = new FileReader("books.hot");
+            BufferedReader br = new BufferedReader(fr);
+
+            String line;
+            boolean found = false;
+
+            while ((line = br.readLine()) != null) {
+                if (line.toLowerCase().contains(query.toLowerCase())) {
+                    System.out.println(line);
+                    found = true;
+                }
+            }
+            if (!found) {
+                System.out.println("Aradığınız kitap bulunamadı.");
+            }
+
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
