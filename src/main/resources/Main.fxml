@@ -6,20 +6,32 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.effect.DropShadow?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="400.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.MainController">
+            fx:controller="org.example.MainController"
+            style="
+                -fx-background-image: url('/images/kutuphane.jpg');
+                -fx-background-size: cover;
+                -fx-background-position: center center;
+            ">
 
     <top>
-        <HBox alignment="CENTER_LEFT">
+        <HBox alignment="CENTER_LEFT"
+              style="-fx-background-color: rgba(255,255,255,0.85);">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
             </padding>
             <children>
-                <Label text="Kütüphane Sistemi" />
+                <Label text="Kütüphane Sistemi">
+                    <style>
+                        -fx-font-size: 18;
+                        -fx-font-weight: bold;
+                    </style>
+                </Label>
 
                 <Region HBox.hgrow="ALWAYS" />
 
@@ -42,40 +54,78 @@
     </top>
 
     <center>
-        <VBox spacing="20.0" BorderPane.alignment="CENTER">
-            <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-            </padding>
+        <VBox spacing="20.0" BorderPane.alignment="CENTER"
+              style="-fx-padding: 20;">
             <children>
 
-                <HBox spacing="10.0">
+                <VBox spacing="10.0"
+                      style="
+                          -fx-background-color: rgba(255,255,255,0.70);
+                          -fx-background-radius: 16;
+                          -fx-padding: 15;
+                      ">
                     <children>
-                        <VBox spacing="5">
-                            <children>
-                                <Label text="Filtre Seçin"/>
-                                <ComboBox fx:id="cmbFilter" prefWidth="150.0"/>
-                            </children>
-                        </VBox>
 
-                        <VBox spacing="5">
+                        <HBox spacing="10.0">
                             <children>
-                                <Label text="Arama"/>
-                                <TextField fx:id="txtQuery"
-                                           prefWidth="300.0"
-                                           promptText="Kitap adı, yazar adı veya barkod..." />
+                                <VBox spacing="5">
+                                    <children>
+                                        <Label text="Filtre Seçin"/>
+                                        <ComboBox fx:id="cmbFilter" prefWidth="150.0"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="5">
+                                    <children>
+                                        <Label text="Arama"/>
+                                        <TextField fx:id="txtQuery"
+                                                   prefWidth="300.0"
+                                                   promptText="Kitap adı, yazar adı veya barkod..." />
+                                    </children>
+                                </VBox>
                             </children>
-                        </VBox>
+                        </HBox>
+
+                        <HBox alignment="CENTER">
+                            <children>
+                                <Button fx:id="btnSearch"
+                                        text="ARA"
+                                        onAction="#onSearchClick"
+                                        prefWidth="140.0"
+                                        prefHeight="40.0"
+                                        style="
+                                            -fx-background-color: linear-gradient(to right, #6c5ce7, #a29bfe);
+                                            -fx-text-fill: white;
+                                            -fx-background-radius: 20;
+                                            -fx-font-weight: bold;
+                                            -fx-cursor: hand;
+                                        ">
+                                    <effect>
+                                        <DropShadow color="#6c5ce780" offsetY="3.0" radius="8.0"/>
+                                    </effect>
+                                </Button>
+                            </children>
+                        </HBox>
+
+
                     </children>
-                </HBox>
+                </VBox>
 
-                <HBox alignment="CENTER">
+                <VBox spacing="5.0"
+                      style="
+                          -fx-background-color: rgba(255,255,255,0.70);
+                          -fx-background-radius: 16;
+                          -fx-padding: 10;
+                      ">
                     <children>
-                        <Button fx:id="btnSearch"
-                                text="Ara"
-                                onAction="#onSearchClick"
-                                prefWidth="120.0"/>
+                        <Label text="Arama Sonuçları"/>
+                        <TextArea fx:id="txtResults"
+                                  prefRowCount="6"
+                                  wrapText="true"
+                                  editable="false"
+                                  promptText="Arama sonuçları burada listelenecek..."/>
                     </children>
-                </HBox>
+                </VBox>
 
             </children>
         </VBox>

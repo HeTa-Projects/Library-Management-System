@@ -16,7 +16,6 @@ public class FileOperations {
 
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
-
                 String[] parts = line.split("\\|");
                 if (parts.length != 6) continue;
 
@@ -27,7 +26,8 @@ public class FileOperations {
                 int barcodeNumber = Integer.parseInt(parts[4]);
                 int publicationYear = Integer.parseInt(parts[5]);
 
-                list.addBook(bookName, authorName, numberOfPages, bookStatus, barcodeNumber, publicationYear);
+                list.addBook(bookName, authorName, numberOfPages,
+                        bookStatus, barcodeNumber, publicationYear);
             }
 
         } catch (IOException e) {
@@ -60,28 +60,31 @@ public class FileOperations {
         }
     }
 
-    void readOnlySearched(String query){
-        try {
-            FileReader fr = new FileReader("books.hot");
-            BufferedReader br = new BufferedReader(fr);
+    public static String readOnlySearched(String query) {
+        StringBuilder result = new StringBuilder();
 
+        File file = new File(FILE_NAME);
+        if (!file.exists()) {
+            return "Kayıtlı kitap dosyası bulunamadı.";
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             boolean found = false;
 
             while ((line = br.readLine()) != null) {
                 if (line.toLowerCase().contains(query.toLowerCase())) {
-                    System.out.println(line);
+                    result.append(line).append("\n");
                     found = true;
                 }
             }
             if (!found) {
-                System.out.println("Aradığınız kitap bulunamadı.");
+                result.append("Aradığınız kitap bulunamadı.");
             }
 
-            br.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            result.append("Dosya okuma hatası: ").append(e.getMessage());
         }
+        return result.toString();
     }
-
 }

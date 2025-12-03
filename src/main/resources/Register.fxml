@@ -2,45 +2,174 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/25"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.example.RegisterController"
-      alignment="CENTER"
-      spacing="10"
-      prefWidth="320" prefHeight="320"> <padding>
-    <Insets top="20" right="20" bottom="20" left="20"/>
-</padding>
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.example.RegisterController"
+           prefHeight="550.0"
+           prefWidth="700.0"
+           style="
+               -fx-background-image: url('/images/kutuphane.jpg');
+               -fx-background-size: cover;
+               -fx-background-position: center center;
+           ">
 
     <children>
-        <Label text="Kayıt Ol"
-               style="-fx-font-size: 18; -fx-font-weight: bold;"/>
 
-        <TextField fx:id="txtUsername"
-                   promptText="Kullanıcı adı"
-                   prefWidth="220"/>
+        <VBox alignment="CENTER"
+              maxWidth="420"
+              spacing="22"
+              style="
+                  -fx-background-color: rgba(255,255,255,0.60);
+                  -fx-background-radius: 25;
+                  -fx-padding: 40;
+              ">
+            <effect>
+                <DropShadow color="#00000055" radius="25" spread="0.12"/>
+            </effect>
 
-        <TextField fx:id="txtEmail"
-                   promptText="E-posta adresi"
-                   prefWidth="220"/>
-
-        <PasswordField fx:id="txtPassword"
-                       promptText="Şifre"
-                       prefWidth="220"/>
-
-        <PasswordField fx:id="txtPasswordConfirm"
-                       promptText="Şifre tekrar"
-                       prefWidth="220"/>
-
-        <Label fx:id="lblError" textFill="red"/>
-
-        <HBox alignment="CENTER" spacing="10">
             <children>
-                <Button text="İptal" onAction="#onCancelClick" prefWidth="90"/>
-                <Button text="Kaydol" onAction="#onRegisterClick" prefWidth="90"/>
-            </children>
-        </HBox>
-    </children>
 
-</VBox>
+                <VBox alignment="CENTER" spacing="5">
+                    <children>
+                        <Label text="Kayıt Ol" textFill="#2d3436">
+                            <font>
+                                <Font name="Segoe UI Bold" size="28"/>
+                            </font>
+                        </Label>
+
+                        <Label text="Kütüphaneye üye olmak için formu doldurun"
+                               textFill="#636e72">
+                            <font>
+                                <Font size="13"/>
+                            </font>
+                        </Label>
+                    </children>
+                    <VBox.margin><Insets bottom="15"/></VBox.margin>
+                </VBox>
+
+                <VBox alignment="CENTER_LEFT" spacing="6">
+                    <children>
+                        <Label text="KULLANICI ADI" textFill="#2d3436">
+                            <font>
+                                <Font name="System Bold" size="11"/>
+                            </font>
+                        </Label>
+
+                        <TextField fx:id="txtUsername"
+                                   promptText="Kullanıcı adı"
+                                   prefHeight="42"
+                                   prefWidth="260"
+                                   style="
+                                       -fx-background-color: rgba(255,255,255,0.8);
+                                       -fx-background-radius: 25;
+                                       -fx-padding: 10 20;
+                                   "/>
+                    </children>
+                </VBox>
+
+                <VBox alignment="CENTER_LEFT" spacing="6">
+                    <children>
+                        <Label text="E-POSTA" textFill="#2d3436">
+                            <font>
+                                <Font name="System Bold" size="11"/>
+                            </font>
+                        </Label>
+
+                        <TextField fx:id="txtEmail"
+                                   promptText="E-posta adresi"
+                                   prefHeight="42"
+                                   prefWidth="260"
+                                   style="
+                                       -fx-background-color: rgba(255,255,255,0.8);
+                                       -fx-background-radius: 25;
+                                       -fx-padding: 10 20;
+                                   "/>
+                    </children>
+                </VBox>
+
+                <VBox alignment="CENTER_LEFT" spacing="6">
+                    <children>
+                        <Label text="ŞİFRE" textFill="#2d3436">
+                            <font>
+                                <Font name="System Bold" size="11"/>
+                            </font>
+                        </Label>
+
+                        <PasswordField fx:id="txtPassword"
+                                       promptText="Şifre"
+                                       prefHeight="42"
+                                       prefWidth="260"
+                                       style="
+                                           -fx-background-color: rgba(255,255,255,0.8);
+                                           -fx-background-radius: 25;
+                                           -fx-padding: 10 20;
+                                       "/>
+                    </children>
+                </VBox>
+
+                <VBox alignment="CENTER_LEFT" spacing="6">
+                    <children>
+                        <Label text="ŞİFRE TEKRAR" textFill="#2d3436">
+                            <font>
+                                <Font name="System Bold" size="11"/>
+                            </font>
+                        </Label>
+
+                        <PasswordField fx:id="txtPasswordConfirm"
+                                       promptText="Şifre tekrar"
+                                       prefHeight="42"
+                                       prefWidth="260"
+                                       style="
+                                           -fx-background-color: rgba(255,255,255,0.8);
+                                           -fx-background-radius: 25;
+                                           -fx-padding: 10 20;
+                                       "/>
+                    </children>
+                </VBox>
+
+                <Label fx:id="lblError"
+                       textFill="#ff6b6b"
+                       wrapText="true"
+                       alignment="CENTER">
+                    <font><Font size="12"/></font>
+                </Label>
+
+                <VBox spacing="10" alignment="CENTER">
+                    <children>
+
+                        <Button text="KAYIT OL"
+                                onAction="#onRegisterClick"
+                                prefWidth="300"
+                                prefHeight="45"
+                                style="
+                                    -fx-background-color: linear-gradient(to right, #6c5ce7, #a29bfe);
+                                    -fx-text-fill: white;
+                                    -fx-background-radius: 25;
+                                    -fx-font-weight: bold;
+                                    -fx-font-size: 14;
+                                ">
+                            <effect>
+                                <DropShadow color="#6c5ce780" offsetY="4" radius="12"/>
+                            </effect>
+                        </Button>
+
+                        <Button text="Vazgeç"
+                                onAction="#onCancelClick"
+                                style="
+                                    -fx-background-color: transparent;
+                                    -fx-text-fill: #2d3436;
+                                    -fx-font-size: 13;
+                                "/>
+
+                    </children>
+                </VBox>
+
+            </children>
+        </VBox>
+
+    </children>
+</StackPane>

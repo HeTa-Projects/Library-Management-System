@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -20,8 +21,10 @@ public class MainController {
     private TextField txtQuery;
 
     @FXML
-    private MenuButton accountMenu;
+    private TextArea txtResults;
 
+    @FXML
+    private MenuButton accountMenu;
     private String loggedInUsername;
 
     @FXML
@@ -36,12 +39,9 @@ public class MainController {
 
     @FXML
     private void onSearchClick() {
-        FileOperations newsearch = new FileOperations();
-
-        String selectedFilter = cmbFilter.getValue();
         String query = txtQuery.getText();
-
-        newsearch.readOnlySearched(query);
+        String result = FileOperations.readOnlySearched(query);
+        txtResults.setText(result);
     }
 
     @FXML
@@ -66,7 +66,6 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
             Parent root = loader.load();
-
             LoginController loginController = loader.getController();
             loginController.setMainController(this);
 
@@ -75,6 +74,7 @@ public class MainController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.showAndWait();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,6 +113,4 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
-    }
-
+}

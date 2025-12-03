@@ -28,19 +28,22 @@ public class RegisterController {
 
         UserOperations newuser = new UserOperations();
 
-        String user = txtUsername.getText();
-        String pass = txtPassword.getText();
-        String confirm = txtPasswordConfirm.getText();
+        String user     = txtUsername.getText();
+        String pass     = txtPassword.getText();
+        String confirm  = txtPasswordConfirm.getText();
+        String email = txtEmail.getText();
 
         if (user.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
             lblError.setText("Tüm alanları doldurun.");
             return;
         }
+
         if (!pass.equals(confirm)) {
             lblError.setText("Şifreler eşleşmiyor!");
             return;
         }
-        newuser.addUser(user,pass);
+
+        newuser.addUser(user, pass);
 
         Stage stage = (Stage) txtUsername.getScene().getWindow();
         stage.close();

@@ -11,8 +11,9 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/Main.fxml"));
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 900, 600);
         stage.setTitle("Kütüphane Sistemi");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
