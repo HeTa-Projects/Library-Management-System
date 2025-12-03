@@ -18,6 +18,9 @@ public class RegisterController {
     private PasswordField txtPasswordConfirm;
 
     @FXML
+    private TextField txtEmail;
+
+    @FXML
     private Label lblError;
 
     @FXML

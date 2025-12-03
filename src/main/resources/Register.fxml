@@ -9,11 +9,9 @@
       fx:controller="org.example.RegisterController"
       alignment="CENTER"
       spacing="10"
-      prefWidth="320" prefHeight="280">
-
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
+      prefWidth="320" prefHeight="320"> <padding>
+    <Insets top="20" right="20" bottom="20" left="20"/>
+</padding>
 
     <children>
         <Label text="Kayıt Ol"
@@ -21,6 +19,10 @@
 
         <TextField fx:id="txtUsername"
                    promptText="Kullanıcı adı"
+                   prefWidth="220"/>
+
+        <TextField fx:id="txtEmail"
+                   promptText="E-posta adresi"
                    prefWidth="220"/>
 
         <PasswordField fx:id="txtPassword"

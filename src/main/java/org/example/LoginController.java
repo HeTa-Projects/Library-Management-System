@@ -17,6 +17,12 @@ public class LoginController {
     @FXML
     private Label lblError;
 
+    private MainController mainController;
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
+
     @FXML
     private void onLoginClick() {
         UserOperations olduser = new UserOperations();
@@ -28,14 +34,19 @@ public class LoginController {
             lblError.setText("Kullanıcı adı ve şifre boş olamaz.");
             return;
         }
-        if(olduser.readUser(user,pass)==true){
-            System.out.printf("Giriş başarılı");
-        }else{
-            System.out.println("Kullanıcı bulunamadı. Kayıt olunuz");
-        }
 
-        Stage stage = (Stage) txtUsername.getScene().getWindow();
-        stage.close();
+        if (olduser.readUser(user, pass)) {
+            System.out.println("Giriş başarılı");
+
+            if (mainController != null) {
+                mainController.onLoginSuccess(user);
+            }
+
+            Stage stage = (Stage) txtUsername.getScene().getWindow();
+            stage.close();
+        } else {
+            lblError.setText("Kullanıcı bulunamadı. Kayıt olunuz.");
+        }
     }
 
     @FXML
