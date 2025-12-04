@@ -8,11 +8,15 @@ public class BookInfo {
     String authorName;
     int numberOfPages;
     String bookStatus;
-    int barcodeNumber;
+    long barcodeNumber;
     int publicationYear;
 
-    BookInfo(String bookName, String authorName, int numberOfPages,
-             String bookStatus, int barcodeNumber, int publicationYear) {
+    public BookInfo(String bookName,
+                    String authorName,
+                    int numberOfPages,
+                    String bookStatus,
+                    long barcodeNumber,
+                    int publicationYear) {
 
         this.bookName = bookName;
         this.authorName = authorName;
@@ -20,9 +24,9 @@ public class BookInfo {
         this.bookStatus = bookStatus;
         this.barcodeNumber = barcodeNumber;
         this.publicationYear = publicationYear;
-
         this.forward = null;
     }
+
 
     public String getTitle() {
         return bookName;
@@ -40,7 +44,7 @@ public class BookInfo {
         return bookStatus;
     }
 
-    public int getBarcode() {
+    public long getBarcode() {
         return barcodeNumber;
     }
 

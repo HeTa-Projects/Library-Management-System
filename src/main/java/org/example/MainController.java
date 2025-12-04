@@ -6,9 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class MainController {
 
@@ -43,9 +46,15 @@ public class MainController {
     private VBox resultsBox;
 
     @FXML
+    private BorderPane rootPane;
+
+    @FXML
     private MenuButton accountMenu;
+
     private String loggedInUsername;
     private String loggedInEmail;
+
+    private BookList bookList = new BookList();
 
     @FXML
     private void initialize() {
@@ -61,44 +70,45 @@ public class MainController {
 
         resultsBox.setVisible(false);
         resultsBox.setManaged(false);
+
     }
 
     @FXML
     private void onSearchClick() {
-
         String query = txtQuery.getText();
         if (query == null || query.isBlank()) {
             return;
         }
-        resultsBox.setVisible(true);
-        resultsBox.setManaged(true);
+
+        String selectedFilter = cmbFilter.getValue();
+        BookInfo found = null;
+
+        if ("Kitap Adı".equals(selectedFilter)) {
+            found = bookList.searchByName(query);
+
+        } else if ("Yazar Adı".equals(selectedFilter)) {
+            found = bookList.searchByAuthor(query);
+
+        } else {
+            try {
+                long barcode = Long.parseLong(query.trim());
+                found = bookList.searchByBarcode(barcode);
+            } catch (NumberFormatException e) {
+                found = null;
+            }
+        }
+
         tblResults.getItems().clear();
 
-        String line = FileOperations.readOnlySearched(query);
-
-        if (line == null || line.isBlank()) {
-            return;
-        }
-        line = line.trim();
-        String[] p = line.split("\\|");
-        if (p.length < 6) {
+        if (found == null) {
+            resultsBox.setVisible(false);
+            resultsBox.setManaged(false);
             return;
         }
 
-        try {
-            String title   = p[0].trim();
-            String author  = p[1].trim();
-            int pages      = Integer.parseInt(p[2].trim());
-            String status  = p[3].trim();
-            int barcode    = Integer.parseInt(p[4].trim());
-            int year       = Integer.parseInt(p[5].trim());
-
-            BookInfo book = new BookInfo(title, author, pages, status, barcode, year);
-            tblResults.getItems().add(book);
-
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
+        resultsBox.setVisible(true);
+        resultsBox.setManaged(true);
+        tblResults.getItems().add(found);
     }
 
     @FXML
@@ -161,6 +171,10 @@ public class MainController {
         );
     }
 
+    private void openProfilePage() {
+        System.out.println("Kullanıcı profil / kitaplarım sayfası açılacak.");
+    }
+
     private void logout() {
         loggedInUsername = null;
         loggedInEmail = null;
@@ -177,21 +191,52 @@ public class MainController {
         accountMenu.getItems().addAll(loginItem, registerItem);
     }
 
-    private void openProfilePage() {
+    public void onAdminLoginSuccess(String username) {
+        System.out.println("Admin olarak giriş yapan: " + username);
+
+        accountMenu.setText(username);
+        accountMenu.getItems().clear();
+
+        MenuItem profileItem = new MenuItem("Profil");
+        profileItem.setOnAction(e -> openAdminProfile(username));
+
+        MenuItem actionsItem = new MenuItem("İşlemler");
+        actionsItem.setOnAction(e -> openAdminInterface());
+
+        MenuItem logoutItem = new MenuItem("Çıkış Yap");
+        logoutItem.setOnAction(e -> logout());
+
+        accountMenu.getItems().addAll(
+                profileItem,
+                actionsItem,
+                new SeparatorMenuItem(),
+                logoutItem
+        );
+    }
+
+    private void openAdminProfile(String username) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfile.fxml"));
-            Parent root = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminProfile.fxml"));
+            Parent profileRoot = loader.load();
 
-            UserProfileController controller = loader.getController();
-            controller.setUserData(loggedInUsername, loggedInEmail);
+            AdminProfileController controller = loader.getController();
+            controller.setAdminName(username);
 
-            Stage stage = new Stage();
-            stage.setTitle("Profilim");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(root));
-            stage.show();
+            rootPane.setCenter(profileRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-        } catch (Exception e) {
+    private void openAdminInterface() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminInterface.fxml"));
+            Parent adminRoot = loader.load();
+
+            AdminController adminController = loader.getController();
+
+            rootPane.setCenter(adminRoot);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

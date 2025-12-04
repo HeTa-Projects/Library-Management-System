@@ -12,7 +12,7 @@
            prefHeight="550.0"
            prefWidth="700.0"
            style="
-               -fx-background-image: url('/images/kutuphane.jpg');
+               -fx-background-image: url('/images/kutuphane.png');
                -fx-background-size: cover;
                -fx-background-position: center center;
            ">
