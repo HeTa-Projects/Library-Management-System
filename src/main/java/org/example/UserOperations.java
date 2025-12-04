@@ -6,50 +6,59 @@ public class UserOperations {
 
     private final String file = "users.hot";
 
-    void addUser(String username, String password) {
-        try {
-            FileWriter fw = new FileWriter(file, true);
-            BufferedWriter bw = new BufferedWriter(fw);
+    void addUser(String username, String password, String email) {
+        try (FileWriter fw = new FileWriter(file, true);
+             BufferedWriter bw = new BufferedWriter(fw)) {
 
-            bw.write(username + " | " + password);
+            bw.write(username + " | " + password + " | " + email);
             bw.newLine();
 
-            bw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    boolean  readUser(String username, String password){
-        try {
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
+
+    boolean readUser(String username, String password) {
+        try (FileReader fr = new FileReader(file);
+             BufferedReader br = new BufferedReader(fr)) {
 
             String line;
 
             while ((line = br.readLine()) != null) {
+                String[] parts = line.split("\\s*\\|\\s*");
 
-                String[] parts = line.split(" \\| ");
-
-                if (parts.length == 2) {
+                if (parts.length >= 2) {
                     String user = parts[0].trim();
                     String pass = parts[1].trim();
 
                     if (user.equals(username)) {
-                        if (pass.equals(password)) {
-                            br.close();
-                            return true;
-                        } else {
-                            br.close();
-                            return false;
-                        }
+                        return pass.equals(password);
                     }
                 }
             }
-            br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return false;
+    }
+
+    public String getUserEmail(String username) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split("\\s*\\|\\s*");
+                if (parts.length >= 3) {
+                    String userFromFile = parts[0].trim();
+                    if (userFromFile.equals(username)) {
+                        return parts[2].trim();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

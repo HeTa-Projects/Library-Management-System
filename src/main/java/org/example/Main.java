@@ -7,14 +7,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/Main.fxml"));
-        Scene scene = new Scene(root, 900, 600);
+        Scene scene = new Scene(root);
         stage.setTitle("Kütüphane Sistemi");
-        stage.setResizable(false);
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
     }
 

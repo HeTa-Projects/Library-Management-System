@@ -5,11 +5,11 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.effect.DropShadow?>
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0"
+            prefHeight="480.0" prefWidth="800.0"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.example.MainController"
@@ -21,25 +21,30 @@
 
     <top>
         <HBox alignment="CENTER_LEFT"
-              style="-fx-background-color: rgba(255,255,255,0.85);">
+              style="
+                    -fx-background-color: rgba(255,255,255,0.93);
+                    -fx-border-color: rgba(0,0,0,0.10);
+                    -fx-border-width: 0 0 1 0;
+              ">
             <padding>
-                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
             </padding>
             <children>
-                <Label text="Kütüphane Sistemi">
-                    <style>
-                        -fx-font-size: 18;
-                        -fx-font-weight: bold;
-                    </style>
-                </Label>
+                <Label text="Kütüphane Sistemi"
+                       style="
+                           -fx-font-size: 20;
+                           -fx-font-weight: bold;
+                       "/>
 
-                <Region HBox.hgrow="ALWAYS" />
+                <Region HBox.hgrow="ALWAYS"/>
 
-                <MenuButton fx:id="accountMenu" mnemonicParsing="false">
+                <MenuButton fx:id="accountMenu" mnemonicParsing="false"
+                            style="-fx-background-color: transparent;">
                     <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true" pickOnBounds="true">
+                        <ImageView fitHeight="32.0" fitWidth="32.0"
+                                   preserveRatio="true" pickOnBounds="true">
                             <image>
-                                <Image url="@images/avatar.png" />
+                                <Image url='@images/profil_icon.jpg'/>
                             </image>
                         </ImageView>
                     </graphic>
@@ -54,44 +59,81 @@
     </top>
 
     <center>
-        <VBox spacing="20.0" BorderPane.alignment="CENTER"
-              style="-fx-padding: 20;">
+        <VBox spacing="20.0"
+              alignment="TOP_CENTER"
+              fillWidth="true"
+              BorderPane.alignment="CENTER"
+              style="-fx-padding: 25;">
             <children>
 
-                <VBox spacing="10.0"
+                <VBox spacing="15.0"
+                      maxWidth="1000.0"
                       style="
-                          -fx-background-color: rgba(255,255,255,0.70);
-                          -fx-background-radius: 16;
-                          -fx-padding: 15;
+                          -fx-background-color: rgba(255,255,255,0.92);
+                          -fx-background-radius: 18;
+                          -fx-padding: 18;
                       ">
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.20)"
+                                    radius="10" offsetY="4"/>
+                    </effect>
                     <children>
 
-                        <HBox spacing="10.0">
-                            <children>
-                                <VBox spacing="5">
-                                    <children>
-                                        <Label text="Filtre Seçin"/>
-                                        <ComboBox fx:id="cmbFilter" prefWidth="150.0"/>
-                                    </children>
-                                </VBox>
+                        <Label text="Kitap Ara"
+                               style="
+                                   -fx-font-size: 18;
+                                   -fx-font-weight: bold;
+                               "/>
 
-                                <VBox spacing="5">
-                                    <children>
-                                        <Label text="Arama"/>
-                                        <TextField fx:id="txtQuery"
-                                                   prefWidth="300.0"
-                                                   promptText="Kitap adı, yazar adı veya barkod..." />
-                                    </children>
-                                </VBox>
-                            </children>
+                        <HBox spacing="15.0">
+                            <VBox spacing="5">
+                                <children>
+                                    <Label text="Filtre"
+                                           style="-fx-font-size: 11; -fx-text-fill: #555;"/>
+
+                                    <ComboBox fx:id="cmbFilter"
+                                              prefWidth="180.0"
+                                              prefHeight="36"
+                                              promptText="Kitap Adı"
+                                              style="
+                                                  -fx-background-color: #f3efff;
+                                                  -fx-background-radius: 18;
+                                                  -fx-border-radius: 18;
+                                                  -fx-border-color: #6c5ce7;
+                                                  -fx-border-width: 1;
+                                                  -fx-padding: 4 10 4 10;
+                                              "/>
+                                </children>
+                            </VBox>
+
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label text="Arama"
+                                           style="-fx-font-size: 11; -fx-text-fill: #555;"/>
+
+                                    <TextField fx:id="txtQuery"
+                                               prefHeight="36"
+                                               HBox.hgrow="ALWAYS"
+                                               maxWidth="Infinity"
+                                               promptText="Kitap adı, yazar adı veya barkod..."
+                                               style="
+                                                   -fx-background-color: #f3efff;
+                                                   -fx-background-radius: 18;
+                                                   -fx-border-radius: 18;
+                                                   -fx-border-color: #6c5ce7;
+                                                   -fx-border-width: 1;
+                                                   -fx-padding: 4 10 4 10;
+                                               "/>
+                                </children>
+                            </VBox>
                         </HBox>
 
-                        <HBox alignment="CENTER">
+                        <HBox alignment="CENTER_RIGHT">
                             <children>
                                 <Button fx:id="btnSearch"
                                         text="ARA"
                                         onAction="#onSearchClick"
-                                        prefWidth="140.0"
+                                        prefWidth="150.0"
                                         prefHeight="40.0"
                                         style="
                                             -fx-background-color: linear-gradient(to right, #6c5ce7, #a29bfe);
@@ -101,34 +143,87 @@
                                             -fx-cursor: hand;
                                         ">
                                     <effect>
-                                        <DropShadow color="#6c5ce780" offsetY="3.0" radius="8.0"/>
+                                        <DropShadow color="#6c5ce780"
+                                                    offsetY="3.0" radius="8.0"/>
                                     </effect>
                                 </Button>
                             </children>
                         </HBox>
 
-
                     </children>
                 </VBox>
 
-                <VBox spacing="5.0"
+                <VBox fx:id="resultsBox"
+                      spacing="15.0"
+                      maxWidth="1000.0"
                       style="
-                          -fx-background-color: rgba(255,255,255,0.70);
-                          -fx-background-radius: 16;
-                          -fx-padding: 10;
+                            -fx-background-color: rgba(255,255,255,0.92);
+                            -fx-background-radius: 18;
+                            -fx-padding: 18;
                       ">
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.20)"
+                                    radius="10" offsetY="4"/>
+                    </effect>
+
                     <children>
-                        <Label text="Arama Sonuçları"/>
-                        <TextArea fx:id="txtResults"
-                                  prefRowCount="6"
-                                  wrapText="true"
-                                  editable="false"
-                                  promptText="Arama sonuçları burada listelenecek..."/>
+
+                        <Label text="Arama Sonuçları"
+                               style="
+                   -fx-font-size: 18;
+                   -fx-font-weight: bold;
+               "/>
+
+                        <TableView fx:id="tblResults"
+                                   prefHeight="220.0"
+                                   maxHeight="220.0"
+                                   style="
+                                        -fx-background-color: transparent;
+                                        -fx-background-radius: 18;
+                                        -fx-border-radius: 18;
+                                        -fx-border-color: #6c5ce7;
+                                        -fx-border-width: 1.2;
+                                        -fx-padding: 6;
+                                        -fx-control-inner-background: rgba(255,255,255,0.95);
+                                        -fx-table-cell-border-color: #f0eaff;
+                                        -fx-table-header-border-color: #f3efff;
+                                        -fx-base: #f3efff;
+                                       ">
+                            <columns>
+                                <TableColumn fx:id="colTitle"
+                                             text="Kitap Adı"
+                                             prefWidth="230.0"
+                                             style="-fx-alignment: CENTER-LEFT; -fx-font-weight: bold;"/>
+
+                                <TableColumn fx:id="colAuthor"
+                                             text="Yazar"
+                                             prefWidth="200.0"
+                                             style="-fx-alignment: CENTER-LEFT;"/>
+
+                                <TableColumn fx:id="colPages"
+                                             text="Sayfa"
+                                             prefWidth="120.0"
+                                             style="-fx-alignment: CENTER;"/>
+
+                                <TableColumn fx:id="colStatus"
+                                             text="Durum"
+                                             prefWidth="100.0"
+                                             style="-fx-alignment: CENTER;"/>
+
+                                <TableColumn fx:id="colBarcode"
+                                             text="Barkod"
+                                             prefWidth="130.0"
+                                             style="-fx-alignment: CENTER;"/>
+
+                                <TableColumn fx:id="colYear"
+                                             text="Yıl"
+                                             prefWidth="100.0"
+                                             style="-fx-alignment: CENTER;"/>
+                            </columns>
+                        </TableView>
                     </children>
                 </VBox>
-
             </children>
         </VBox>
     </center>
-
 </BorderPane>

@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.effect.DropShadow?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="400.0" prefWidth="600.0"
@@ -36,7 +37,7 @@
                                    pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
-                                <Image url="@images/avatar.png"/>
+                                <Image url="@images/profil_icon.jpg"/>
                             </image>
                         </ImageView>
 
@@ -58,10 +59,22 @@
                        wrapText="true"
                        style="-fx-text-fill: #555555;"/>
 
-                <Button text="Ana Menüye Dön"
+                <Button fx:id="btnBack"
+                        text="Ana Menüye Dön"
                         onAction="#onBackClick"
-                        prefWidth="150.0"/>
-
+                        prefWidth="180"
+                        prefHeight="40"
+                        style="
+                            -fx-background-color: linear-gradient(to right, #6c5ce7, #a29bfe);
+                            -fx-text-fill: white;
+                            -fx-background-radius: 20;
+                            -fx-font-weight: bold;
+                            -fx-cursor: hand;
+                        ">
+                    <effect>
+                        <DropShadow color="#6c5ce780" offsetY="3" radius="8"/>
+                    </effect>
+                </Button>
             </children>
         </VBox>
     </children>

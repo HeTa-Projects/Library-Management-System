@@ -15,9 +15,6 @@ public class RegisterController {
     private PasswordField txtPassword;
 
     @FXML
-    private PasswordField txtPasswordConfirm;
-
-    @FXML
     private TextField txtEmail;
 
     @FXML
@@ -25,26 +22,16 @@ public class RegisterController {
 
     @FXML
     private void onRegisterClick() {
-
-        UserOperations newuser = new UserOperations();
-
-        String user     = txtUsername.getText();
-        String pass     = txtPassword.getText();
-        String confirm  = txtPasswordConfirm.getText();
+        String user = txtUsername.getText();
+        String pass = txtPassword.getText();
         String email = txtEmail.getText();
 
-        if (user.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
-            lblError.setText("Tüm alanları doldurun.");
+        if (user.isEmpty() || pass.isEmpty() || email.isEmpty()) {
+            lblError.setText("Tüm alanları doldurmalısınız.");
             return;
         }
-
-        if (!pass.equals(confirm)) {
-            lblError.setText("Şifreler eşleşmiyor!");
-            return;
-        }
-
-        newuser.addUser(user, pass);
-
+        UserOperations ops = new UserOperations();
+        ops.addUser(user, pass, email);
         Stage stage = (Stage) txtUsername.getScene().getWindow();
         stage.close();
     }

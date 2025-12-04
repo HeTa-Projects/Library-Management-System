@@ -34,14 +34,13 @@ public class LoginController {
             lblError.setText("Kullanıcı adı ve şifre boş olamaz.");
             return;
         }
-
         if (olduser.readUser(user, pass)) {
             System.out.println("Giriş başarılı");
+            String email = olduser.getUserEmail(user);
 
             if (mainController != null) {
-                mainController.onLoginSuccess(user);
+                mainController.onLoginSuccess(user, email);
             }
-
             Stage stage = (Stage) txtUsername.getScene().getWindow();
             stage.close();
         } else {
