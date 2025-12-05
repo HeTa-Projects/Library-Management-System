@@ -11,73 +11,83 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.example.AdminController"
       alignment="TOP_CENTER"
-      spacing="20"
-      style="-fx-padding: 20;">
+      spacing="25"
+      style="-fx-padding: 40 0 0 0;">
 
     <children>
 
-        <Label text="Admin İşlemleri">
-            <font>
-                <Font name="System Bold" size="20"/>
-            </font>
-        </Label>
-
-        <!-- Kitap ekleme kartı -->
-        <VBox spacing="12"
+        <VBox spacing="14"
               maxWidth="600"
+              alignment="TOP_CENTER"
               style="
-                  -fx-background-color: rgba(255,255,255,0.95);
-                  -fx-background-radius: 18;
-                  -fx-padding: 20;
+                  -fx-background-color: rgba(255,255,255,0.78);
+                  -fx-background-radius: 30;
+                  -fx-padding: 25 35 30 35;
               ">
             <effect>
-                <DropShadow radius="10" offsetY="4"
-                            color="rgba(0,0,0,0.25)"/>
+                <DropShadow radius="25"
+                            offsetY="4"
+                            color="rgba(0,0,0,0.30)"/>
             </effect>
 
             <children>
 
+                <Label text="Admin İşlemleri"
+                       style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+
                 <Label text="Kitap Ekle"
                        style="-fx-font-size: 16; -fx-font-weight: bold;"/>
 
-                <TextField fx:id="txtTitle"   promptText="Kitap Adı"/>
-                <TextField fx:id="txtAuthor"  promptText="Yazar"/>
-                <TextField fx:id="txtPages"   promptText="Sayfa Sayısı"/>
-                <TextField fx:id="txtBarcode" promptText="Barkod"/>
-                <TextField fx:id="txtStatus"  promptText="Durum (Mevcut / Mevcut Değil)"/>
-                <TextField fx:id="txtYear"    promptText="Yıl"/>
+                <TextField fx:id="txtTitle"
+                           promptText="Kitap Adı"
+                           style="-fx-background-radius: 25; -fx-background-color: white; -fx-padding: 8 15;"/>
 
+                <TextField fx:id="txtAuthor"
+                           promptText="Yazar"
+                           style="-fx-background-radius: 25; -fx-background-color: white; -fx-padding: 8 15;"/>
 
-                <HBox spacing="10">
+                <TextField fx:id="txtPages"
+                           promptText="Sayfa Sayısı"
+                           style="-fx-background-radius: 25; -fx-background-color: white; -fx-padding: 8 15;"/>
+
+                <TextField fx:id="txtBarcode"
+                           promptText="Barkod"
+                           style="-fx-background-radius: 25; -fx-background-color: white; -fx-padding: 8 15;"/>
+
+                <TextField fx:id="txtStatus"
+                           promptText="Durum (Mevcut / Mevcut Değil)"
+                           style="-fx-background-radius: 25; -fx-background-color: white; -fx-padding: 8 15;"/>
+
+                <TextField fx:id="txtYear"
+                           promptText="Yıl"
+                           style="-fx-background-radius: 25; -fx-background-color: white; -fx-padding: 8 15;"/>
+
+                <HBox spacing="10" alignment="CENTER">
                     <Button text="Kaydet"
                             onAction="#onSaveBookClick"
                             style="
                                 -fx-background-radius: 18;
-                                -fx-background-color:
-                                    linear-gradient(to right, #6c5ce7, #a29bfe);
+                                -fx-background-color: linear-gradient(to right, #6c5ce7, #a29bfe);
                                 -fx-text-fill: white;
                                 -fx-padding: 6 20;
                             "/>
+
                     <Button text="Temizle"
                             onAction="#onClearFormClick"
                             style="
                                 -fx-background-radius: 18;
                                 -fx-background-color: white;
-                                -fx-border-radius: 18;
                                 -fx-border-color: #6c5ce7;
+                                -fx-border-radius: 18;
                                 -fx-text-fill: #6c5ce7;
                                 -fx-padding: 6 20;
                             "/>
                 </HBox>
 
-                <Label fx:id="lblMessage"
-                       textFill="red"/>
+                <Label fx:id="lblMessage" textFill="red"/>
 
             </children>
         </VBox>
-
-        <!-- İleride başka admin işlemleri için alan bırakıyoruz -->
-        <!-- Örneğin kullanıcıları görüntüle, kitapları düzenle vs. -->
 
     </children>
 </VBox>

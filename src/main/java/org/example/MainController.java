@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
@@ -56,8 +57,12 @@ public class MainController {
 
     private BookList bookList = new BookList();
 
+    private Node homeView;
+
     @FXML
     private void initialize() {
+        homeView = rootPane.getCenter();
+
         cmbFilter.getItems().addAll("Kitap Adı", "Yazar Adı", "Barkod No");
         cmbFilter.getSelectionModel().selectFirst();
 
@@ -70,7 +75,11 @@ public class MainController {
 
         resultsBox.setVisible(false);
         resultsBox.setManaged(false);
+    }
 
+    public void showHome() {
+        rootPane.setCenter(homeView);
+        hideResults();
     }
 
     @FXML
@@ -81,34 +90,58 @@ public class MainController {
         }
 
         String selectedFilter = cmbFilter.getValue();
-        BookInfo found = null;
+        tblResults.getItems().clear();
 
         if ("Kitap Adı".equals(selectedFilter)) {
-            found = bookList.searchByName(query);
+            BookInfo head = bookList.searchByName(query);
+            if (head == null) {
+                hideResults();
+                return;
+            }
+            showResultsFromList(head);
 
         } else if ("Yazar Adı".equals(selectedFilter)) {
-            found = bookList.searchByAuthor(query);
+            BookInfo head = bookList.searchByAuthor(query);
+            if (head == null) {
+                hideResults();
+                return;
+            }
+            showResultsFromList(head);
 
         } else {
+            BookInfo found = null;
             try {
                 long barcode = Long.parseLong(query.trim());
                 found = bookList.searchByBarcode(barcode);
             } catch (NumberFormatException e) {
                 found = null;
             }
+
+            if (found == null) {
+                hideResults();
+                return;
+            }
+            resultsBox.setVisible(true);
+            resultsBox.setManaged(true);
+            tblResults.getItems().add(found);
         }
+    }
 
-        tblResults.getItems().clear();
-
-        if (found == null) {
-            resultsBox.setVisible(false);
-            resultsBox.setManaged(false);
-            return;
-        }
-
+    private void showResultsFromList(BookInfo head) {
         resultsBox.setVisible(true);
         resultsBox.setManaged(true);
-        tblResults.getItems().add(found);
+
+        BookInfo temp = head;
+        while (temp != null) {
+            tblResults.getItems().add(temp);
+            temp = temp.forward;
+        }
+    }
+
+    private void hideResults() {
+        resultsBox.setVisible(false);
+        resultsBox.setManaged(false);
+        tblResults.getItems().clear();
     }
 
     @FXML
@@ -133,6 +166,7 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
             Parent root = loader.load();
+
             LoginController loginController = loader.getController();
             loginController.setMainController(this);
 
@@ -158,7 +192,7 @@ public class MainController {
         profileItem.setOnAction(e -> openProfilePage());
 
         MenuItem myBooksItem = new MenuItem("Kitaplarım");
-        myBooksItem.setOnAction(e -> openProfilePage());
+        myBooksItem.setOnAction(e -> openMyBooksPage());
 
         MenuItem logoutItem = new MenuItem("Çıkış Yap");
         logoutItem.setOnAction(e -> logout());
@@ -172,12 +206,46 @@ public class MainController {
     }
 
     private void openProfilePage() {
-        System.out.println("Kullanıcı profil / kitaplarım sayfası açılacak.");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfile.fxml"));
+            Parent profileRoot = loader.load();
+            UserProfileController controller = loader.getController();
+
+            controller.setMainController(this);
+            controller.setUserData(loggedInUsername, loggedInEmail);
+
+            rootPane.setCenter(profileRoot);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openMyBooksPage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfile.fxml"));
+            Parent profileRoot = loader.load();
+            UserProfileController controller = loader.getController();
+
+            controller.setMainController(this);
+            String booksText = getBorrowedBooksTextForUser(loggedInUsername);
+            controller.showBooks(loggedInUsername, booksText);
+
+            rootPane.setCenter(profileRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getBorrowedBooksTextForUser(String username) {
+        // TODO: Kullanıcının ödünç aldığı kitapları dosyadan / DB'den oku
+        return "";
     }
 
     private void logout() {
         loggedInUsername = null;
         loggedInEmail = null;
+        showHome();
 
         accountMenu.setText(null);
         accountMenu.getItems().clear();
@@ -193,7 +261,6 @@ public class MainController {
 
     public void onAdminLoginSuccess(String username) {
         System.out.println("Admin olarak giriş yapan: " + username);
-
         accountMenu.setText(username);
         accountMenu.getItems().clear();
 
@@ -232,9 +299,7 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminInterface.fxml"));
             Parent adminRoot = loader.load();
-
             AdminController adminController = loader.getController();
-
             rootPane.setCenter(adminRoot);
         } catch (IOException e) {
             e.printStackTrace();

@@ -19,71 +19,84 @@
            prefHeight="550.0"
            prefWidth="700.0"
            style="
-    -fx-background-image: url('/images/kutuphane.png');
-    -fx-background-size: cover;
-    -fx-background-position: center center;
-">
+                -fx-background-image: url('/images/kutuphane.png');
+                -fx-background-size: cover;
+                -fx-background-position: center center;
+           ">
+
+    <fx:define>
+        <ToggleGroup fx:id="roleGroup"/>
+    </fx:define>
 
     <children>
         <VBox alignment="CENTER" spacing="30">
             <children>
 
-                <Label text="Giriş Yap">
-                    <font>
-                        <Font name="System Bold" size="20"/>
-                    </font>
-                </Label>
-
-                <VBox spacing="15"
-                      maxWidth="450"
+                <VBox spacing="20"
+                      alignment="CENTER"
+                      maxWidth="480"
                       style="
-                          -fx-background-color: white;
-                          -fx-background-radius: 25;
-                          -fx-padding: 20 30 30 30;
+                          -fx-background-color: rgba(255,255,255,0.78);
+                          -fx-background-radius: 30;
+                          -fx-padding: 25 35 30 35;
                       ">
                     <effect>
-                        <DropShadow radius="15" offsetY="4"/>
+                        <DropShadow radius="25"
+                                    offsetY="4"
+                                    color="rgba(0,0,0,0.30)"/>
                     </effect>
+
+                    <Label text="Giriş Yap">
+                        <font>
+                            <Font name="System Bold" size="22"/>
+                        </font>
+                    </Label>
+
                     <HBox spacing="10" alignment="CENTER_LEFT">
                         <Label text="Giriş tipi:"/>
 
                         <ToggleButton fx:id="btnUser"
                                       text="Kullanıcı"
                                       selected="true"
+                                      toggleGroup="$roleGroup"
                                       onAction="#onUserRoleClick"
                                       style="
-                      -fx-background-radius: 20;
-                      -fx-padding: 6 20;
-                      -fx-background-color: white;
-                      -fx-border-color: #cccccc;
-                      -fx-border-radius: 20;
-                      -fx-text-fill: #444;
-                  "/>
+                                          -fx-background-radius: 20;
+                                          -fx-padding: 6 20;
+                                          -fx-background-color: #7f5af0;
+                                          -fx-text-fill: white;
+                                      "/>
 
                         <ToggleButton fx:id="btnAdmin"
                                       text="Admin"
+                                      toggleGroup="$roleGroup"
                                       onAction="#onAdminRoleClick"
                                       style="
-                      -fx-background-radius: 20;
-                      -fx-padding: 6 20;
-                      -fx-background-color: white;
-                      -fx-border-color: #cccccc;
-                      -fx-border-radius: 20;
-                      -fx-text-fill: #444;
-                  "/>
+                                          -fx-background-radius: 20;
+                                          -fx-padding: 6 20;
+                                          -fx-background-color: white;
+                                          -fx-border-color: #cccccc;
+                                          -fx-border-radius: 20;
+                                          -fx-text-fill: #444;
+                                      "/>
                     </HBox>
 
                     <TextField fx:id="txtUsername"
                                promptText="Kullanıcı adı"
-                               style="-fx-background-radius: 25;
-                                      -fx-background-color: #ffffff;
-                                      -fx-padding: 8 15 8 15;"/>
+                               style="
+                                   -fx-background-radius: 25;
+                                   -fx-background-color: #ffffff;
+                                   -fx-padding: 8 15 8 15;
+                               "/>
 
                     <PasswordField fx:id="txtPassword"
                                    promptText="Şifre"
-                                   style="-fx-background-radius: 25;
-                                          -fx-background-color: #ffffff;
-                                          -fx-padding: 8 15 8 15;"/>
+                                   style="
+                                       -fx-background-radius: 25;
+                                       -fx-background-color: #ffffff;
+                                       -fx-padding: 8 15 8 15;
+                                   "/>
+
                     <Label fx:id="lblError"
                            textFill="red"
                            wrapText="true"
@@ -93,9 +106,11 @@
                         <Button fx:id="btnCancel"
                                 text="İptal"
                                 onAction="#onCancelClick"
-                                style="-fx-background-color: transparent;
-                                       -fx-text-fill: #444;
-                                       -fx-padding: 6 20 6 20;"/>
+                                style="
+                                    -fx-background-color: transparent;
+                                    -fx-text-fill: #444;
+                                    -fx-padding: 6 20 6 20;
+                                "/>
 
                         <Button fx:id="btnLogin"
                                 text="Giriş"
@@ -110,6 +125,7 @@
                     </HBox>
 
                 </VBox>
+
             </children>
         </VBox>
     </children>

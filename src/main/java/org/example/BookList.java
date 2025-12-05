@@ -6,9 +6,23 @@ public class BookList {
     BookInfo first;
     BookInfo last;
 
+    private BookTree bookTree = new BookTree();
+
     BookList() {
         first = null;
         last = null;
+        loadFromFile();
+    }
+
+    private void addFromFile(BookInfo newBook) {
+        if (first == null) {
+            first = newBook;
+            last = newBook;
+        } else {
+            last.forward = newBook;
+            last = newBook;
+        }
+        bookTree.insert(newBook.barcodeNumber, newBook);
     }
 
     void addBook(String bookName, String authorName, int numberOfPages,
@@ -24,6 +38,7 @@ public class BookList {
             last.forward = newBook;
             last = newBook;
         }
+        bookTree.insert(barcodeNumber, newBook);
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("books.hot", true))) {
 
@@ -36,6 +51,39 @@ public class BookList {
             bw.newLine();
 
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFromFile() {
+        File f = new File("books.hot");
+        if (!f.exists()) {
+            return;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+
+                String[] p = line.split("\\|");
+                if (p.length < 6) continue;
+
+                String fileBookName = p[0].trim();
+                String authorName = p[1].trim();
+                int numberOfPages = Integer.parseInt(p[2].trim());
+                String bookStatus = p[3].trim();
+                long barcodeNumber = Long.parseLong(p[4].trim());
+                int publicationYear = Integer.parseInt(p[5].trim());
+
+                BookInfo book = new BookInfo(fileBookName, authorName, numberOfPages,
+                        bookStatus, barcodeNumber, publicationYear);
+
+                addFromFile(book);
+            }
+        } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
     }
@@ -93,7 +141,6 @@ public class BookList {
                 node.left = insertRec(node.left, key, book);
             else if (key > node.barcodeNumber)
                 node.right = insertRec(node.right, key, book);
-
             return node;
         }
 
@@ -105,6 +152,60 @@ public class BookList {
                 else node = node.right;
             }
             return null;
+        }
+
+        BookInfo searchByTitle(String title) {
+            if (root == null) return null;
+            String query = title.trim().toLowerCase();
+            return searchByTitleRec(root, query, null);
+        }
+
+        private BookInfo searchByTitleRec(BookTreeNode node, String query, BookInfo head) {
+            if (node == null) return head;
+
+            if (node.book.bookName != null &&
+                    node.book.bookName.toLowerCase().contains(query)) {
+
+                BookInfo newNode = new BookInfo(
+                        node.book.bookName,
+                        node.book.authorName,
+                        node.book.numberOfPages,
+                        node.book.bookStatus,
+                        node.book.barcodeNumber,
+                        node.book.publicationYear);
+                newNode.forward = head;
+                head = newNode;
+            }
+            head = searchByTitleRec(node.left, query, head);
+            head = searchByTitleRec(node.right, query, head);
+            return head;
+        }
+
+        BookInfo searchByAuthor(String author) {
+            if (root == null) return null;
+            String query = author.trim().toLowerCase();
+            return searchByAuthorRec(root, query, null);
+        }
+
+        private BookInfo searchByAuthorRec(BookTreeNode node, String query, BookInfo head) {
+            if (node == null) return head;
+
+            if (node.book.authorName != null &&
+                    node.book.authorName.toLowerCase().contains(query)) {
+
+                BookInfo newNode = new BookInfo(
+                        node.book.bookName,
+                        node.book.authorName,
+                        node.book.numberOfPages,
+                        node.book.bookStatus,
+                        node.book.barcodeNumber,
+                        node.book.publicationYear);
+                newNode.forward = head;
+                head = newNode;
+            }
+            head = searchByAuthorRec(node.left, query, head);
+            head = searchByAuthorRec(node.right, query, head);
+            return head;
         }
     }
 
@@ -118,106 +219,23 @@ public class BookList {
                             "\nNumber Of Pages : " + temp.numberOfPages +
                             "\nBook Status : " + temp.bookStatus +
                             "\nBarcode Number : " + temp.barcodeNumber +
-                            "\nPublication Year : " + temp.publicationYear
-            );
+                            "\nPublication Year : " + temp.publicationYear);
             temp = temp.forward;
         }
     }
 
     public BookInfo searchByName(String bookName) {
-        String query = bookName.trim();
-
-        try (BufferedReader br = new BufferedReader(new FileReader("books.hot"))) {
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) continue;
-
-                String[] p = line.split("\\|");
-                if (p.length < 6) continue;
-
-                String fileBookName   = p[0].trim();
-                String authorName     = p[1].trim();
-                int numberOfPages     = Integer.parseInt(p[2].trim());
-                String bookStatus     = p[3].trim();
-                long barcodeNumber    = Long.parseLong(p[4].trim());
-                int publicationYear   = Integer.parseInt(p[5].trim());
-
-                if (fileBookName.equalsIgnoreCase(query)) {
-                    return new BookInfo(fileBookName, authorName, numberOfPages,
-                            bookStatus, barcodeNumber, publicationYear);
-                }
-            }
-
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        if (bookTree == null) return null;
+        return bookTree.searchByTitle(bookName);
     }
 
     public BookInfo searchByAuthor(String authorName) {
-        String query = authorName.trim();
-
-        try (BufferedReader br = new BufferedReader(new FileReader("books.hot"))) {
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) continue;
-
-                String[] p = line.split("\\|");
-                if (p.length < 6) continue;
-
-                String fileBookName   = p[0].trim();
-                String fileAuthorName = p[1].trim();
-                int numberOfPages     = Integer.parseInt(p[2].trim());
-                String bookStatus     = p[3].trim();
-                long barcodeNumber    = Long.parseLong(p[4].trim());
-                int publicationYear   = Integer.parseInt(p[5].trim());
-
-                if (fileAuthorName.equalsIgnoreCase(query)) {
-                    return new BookInfo(fileBookName, fileAuthorName, numberOfPages,
-                            bookStatus, barcodeNumber, publicationYear);
-                }
-            }
-
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        if (bookTree == null) return null;
+        return bookTree.searchByAuthor(authorName);
     }
 
     public BookInfo searchByBarcode(long barcodeNumberToFind) {
-        try (BufferedReader br = new BufferedReader(new FileReader("books.hot"))) {
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) continue;
-
-                String[] p = line.split("\\|");
-                if (p.length < 6) continue;
-
-                String fileBookName   = p[0].trim();
-                String authorName     = p[1].trim();
-                int numberOfPages     = Integer.parseInt(p[2].trim());
-                String bookStatus     = p[3].trim();
-                long barcodeNumber    = Long.parseLong(p[4].trim());
-                int publicationYear   = Integer.parseInt(p[5].trim());
-
-                if (barcodeNumber == barcodeNumberToFind) {
-                    return new BookInfo(fileBookName, authorName, numberOfPages,
-                            bookStatus, barcodeNumber, publicationYear);
-                }
-            }
-
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        if (bookTree == null) return null;
+        return bookTree.search(barcodeNumberToFind);
     }
 }
