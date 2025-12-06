@@ -7,11 +7,10 @@ public class UserOperations {
     private final String file = "users.hot";
     private final String admin_file = "admins.hot";
 
-    void addUser(String username, String password, String email) {
-        try (FileWriter fw = new FileWriter(file, true);
-             BufferedWriter bw = new BufferedWriter(fw)) {
+    void addUser(String username, String password, String email, String tc) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
 
-            bw.write(username + " | " + password + " | " + email);
+            bw.write(username + " | " + password + " | " + email + " | " + tc);
             bw.newLine();
 
         } catch (IOException e) {
@@ -20,23 +19,22 @@ public class UserOperations {
     }
 
     boolean readUser(String username, String password) {
-        try (FileReader fr = new FileReader(file);
-             BufferedReader br = new BufferedReader(fr)) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
             String line;
-
             while ((line = br.readLine()) != null) {
+
                 String[] parts = line.split("\\s*\\|\\s*");
+                if (parts.length < 4) continue;
 
-                if (parts.length >= 2) {
-                    String user = parts[0].trim();
-                    String pass = parts[1].trim();
+                String user = parts[0];
+                String pass = parts[1];
 
-                    if (user.equals(username)) {
-                        return pass.equals(password);
-                    }
+                if (user.equals(username) && pass.equals(password)) {
+                    return true;
                 }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,40 +45,52 @@ public class UserOperations {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
             String line;
-
             while ((line = br.readLine()) != null) {
+
                 String[] parts = line.split("\\s*\\|\\s*");
-                if (parts.length >= 3) {
-                    String userFromFile = parts[0].trim();
-                    if (userFromFile.equals(username)) {
-                        return parts[2].trim();
-                    }
+                if (parts.length < 4) continue;
+
+                if (parts[0].equals(username)) {
+                    return parts[2];
                 }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         return "";
     }
-    public boolean readAdmin(String username, String password) {
 
-        try (BufferedReader br = new BufferedReader(new FileReader(admin_file))) {
+    public String getUserTc(String username) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
             String line;
-
             while ((line = br.readLine()) != null) {
 
-                line = line.trim();
-                if (line.isEmpty()) continue;
+                String[] parts = line.split("\\s*\\|\\s*");
+                if (parts.length < 4) continue;
 
-                String[] parts = line.split("\\|");
+                if (parts[0].equals(username)) {
+                    return parts[3];
+                }
+            }
 
-                if (parts.length < 2) continue;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
-                String fileUser = parts[0].trim();
-                String filePass = parts[1].trim();
+    public boolean isTcUsed(String tc) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
-                if (fileUser.equals(username) && filePass.equals(password)) {
+            String line;
+            while ((line = br.readLine()) != null) {
+
+                String[] parts = line.split("\\s*\\|\\s*");
+                if (parts.length < 4) continue;
+
+                if (parts[3].equals(tc)) {
                     return true;
                 }
             }
@@ -88,7 +98,27 @@ public class UserOperations {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
+    }
 
+    public boolean readAdmin(String username, String password) {
+        try (BufferedReader br = new BufferedReader(new FileReader(admin_file))) {
+
+            String line;
+            while ((line = br.readLine()) != null) {
+
+                String[] parts = line.split("\\|");
+                if (parts.length < 2) continue;
+
+                if (parts[0].trim().equals(username)
+                        && parts[1].trim().equals(password)) {
+                    return true;
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }

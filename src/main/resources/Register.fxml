@@ -93,6 +93,26 @@
 
                 <VBox alignment="CENTER_LEFT" spacing="6">
                     <children>
+                        <Label text="TC KİMLİK NO" textFill="#2d3436">
+                            <font>
+                                <Font name="System Bold" size="11"/>
+                            </font>
+                        </Label>
+
+                        <TextField fx:id="txtTc"
+                                   promptText="TC Kimlik No"
+                                   prefHeight="42"
+                                   prefWidth="260"
+                                   style="
+                                       -fx-background-color: rgba(255,255,255,0.8);
+                                       -fx-background-radius: 25;
+                                       -fx-padding: 10 20;
+                                   "/>
+                    </children>
+                </VBox>
+
+                <VBox alignment="CENTER_LEFT" spacing="6">
+                    <children>
                         <Label text="ŞİFRE" textFill="#2d3436">
                             <font>
                                 <Font name="System Bold" size="11"/>

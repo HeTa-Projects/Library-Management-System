@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
+import java.util.List;
+
 public class UserProfileController {
 
     @FXML
@@ -31,15 +33,12 @@ public class UserProfileController {
         if (email != null && !email.isEmpty()) {
             txtEmail.setText(email);
         }
-        if (lblTitle != null) {
-            lblTitle.setText("Profil");
-        }
+        lblTitle.setText("Profil");
     }
 
     public void showBooks(String username, String booksText) {
-        if (lblTitle != null) {
-            lblTitle.setText("Kitaplarım");
-        }
+        lblTitle.setText("Kitaplarım");
+
         if (username != null && !username.isEmpty()) {
             txtUsername.setText(username);
         }
@@ -49,6 +48,25 @@ public class UserProfileController {
         } else {
             txtEmail.setText(booksText);
         }
+    }
+
+    public void showBooks(String username, List<LoanRecord> loans) {
+        String booksText;
+
+        if (loans == null || loans.isEmpty()) {
+            booksText = "Ödünç alınan kitap yok";
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (LoanRecord loan : loans) {
+                if (sb.length() > 0) sb.append("\n");
+                sb.append("Kitap: ")
+                        .append(loan.getBookTitle())
+                        .append(" | Barkod: ")
+                        .append(loan.getBarcode());
+            }
+            booksText = sb.toString();
+        }
+        showBooks(username, booksText);
     }
 
     @FXML

@@ -13,6 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;   // <-- YENİ
 
 public class MainController {
 
@@ -54,6 +55,7 @@ public class MainController {
 
     private String loggedInUsername;
     private String loggedInEmail;
+    private String loggedInTc;
 
     private BookList bookList = new BookList();
 
@@ -184,8 +186,18 @@ public class MainController {
     public void onLoginSuccess(String username, String email) {
         this.loggedInUsername = username;
         this.loggedInEmail = email;
+        setupUserMenu();
+    }
 
-        accountMenu.setText(username);
+    public void onLoginSuccess(String username, String email, String tc) {
+        this.loggedInUsername = username;
+        this.loggedInEmail = email;
+        this.loggedInTc = tc;
+        setupUserMenu();
+    }
+
+    private void setupUserMenu() {
+        accountMenu.setText(loggedInUsername);
         accountMenu.getItems().clear();
 
         MenuItem profileItem = new MenuItem("Profil");
@@ -228,8 +240,17 @@ public class MainController {
             UserProfileController controller = loader.getController();
 
             controller.setMainController(this);
-            String booksText = getBorrowedBooksTextForUser(loggedInUsername);
-            controller.showBooks(loggedInUsername, booksText);
+
+            java.util.List<LoanRecord> loans = null;
+            if (loggedInTc != null && !loggedInTc.isBlank()) {
+                try {
+                    LoanOperations ops = new LoanOperations();
+                    loans = ops.getLoansByTc(loggedInTc);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            controller.showBooks(loggedInUsername, loans);
 
             rootPane.setCenter(profileRoot);
         } catch (IOException e) {
@@ -238,13 +259,38 @@ public class MainController {
     }
 
     private String getBorrowedBooksTextForUser(String username) {
-        // TODO: Kullanıcının ödünç aldığı kitapları dosyadan / DB'den oku
-        return "";
+        if (loggedInTc == null || loggedInTc.isBlank()) {
+            return "";
+        }
+
+        try {
+            LoanOperations ops = new LoanOperations();
+            List<LoanRecord> loans = ops.getLoansByTc(loggedInTc);
+
+            if (loans == null || loans.isEmpty()) {
+                return "";
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for (LoanRecord loan : loans) {
+                sb.append("Kitap: ")
+                        .append(loan.getBookTitle())
+                        .append(" | Barkod: ")
+                        .append(loan.getBarcode())
+                        .append("\n");
+            }
+            return sb.toString();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     private void logout() {
         loggedInUsername = null;
         loggedInEmail = null;
+        loggedInTc = null;
         showHome();
 
         accountMenu.setText(null);

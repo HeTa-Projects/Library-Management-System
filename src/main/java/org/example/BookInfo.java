@@ -27,7 +27,6 @@ public class BookInfo {
         this.forward = null;
     }
 
-
     public String getTitle() {
         return bookName;
     }
@@ -42,6 +41,10 @@ public class BookInfo {
 
     public String getStatus() {
         return bookStatus;
+    }
+
+    public void setStatus(String status) {
+        this.bookStatus = status;
     }
 
     public long getBarcode() {

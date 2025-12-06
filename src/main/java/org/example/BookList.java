@@ -107,6 +107,7 @@ public class BookList {
                     }
                 }
                 System.out.println("Book Deleted: " + temp.bookName);
+                saveToFile();
                 return;
             }
             before = temp;
@@ -237,5 +238,39 @@ public class BookList {
     public BookInfo searchByBarcode(long barcodeNumberToFind) {
         if (bookTree == null) return null;
         return bookTree.search(barcodeNumberToFind);
+    }
+
+    private void saveToFile() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("books.hot", false))) {
+            BookInfo temp = first;
+            while (temp != null) {
+                bw.write(temp.bookName + "|" +
+                        temp.authorName + "|" +
+                        temp.numberOfPages + "|" +
+                        temp.bookStatus + "|" +
+                        temp.barcodeNumber + "|" +
+                        temp.publicationYear);
+                bw.newLine();
+                temp = temp.forward;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateBookStatus(long barcodeNumber, String newStatus) {
+        if (newStatus == null || newStatus.isBlank()) return;
+
+        BookInfo book = searchByBarcode(barcodeNumber);
+        if (book == null) {
+            System.out.println("Kitap bulunamadı, durum güncellenemedi.");
+            return;
+        }
+        book.setStatus(newStatus);
+        saveToFile();
+    }
+
+    public void returnBook(long barcodeNumber) {
+        updateBookStatus(barcodeNumber, "Mevcut");
     }
 }

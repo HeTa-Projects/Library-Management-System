@@ -109,7 +109,6 @@ public class LoginController {
             lblError.setText("Kullanıcı adı ve şifre boş olamaz.");
             return;
         }
-
         boolean isAdmin = btnAdmin.isSelected();
 
         UserOperations ops = new UserOperations();
@@ -132,17 +131,25 @@ public class LoginController {
         if (ops.readUser(user, pass)) {
             System.out.println("Kullanıcı girişi başarılı!");
             String email = ops.getUserEmail(user);
-
-            if (mainController != null) {
-                mainController.onLoginSuccess(user, email);
+            String tc = null;
+            try {
+                tc = ops.getUserTc(user);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
+            if (mainController != null) {
+                if (tc != null && !tc.isBlank()) {
+                    mainController.onLoginSuccess(user, email, tc);
+                } else {
+                    mainController.onLoginSuccess(user, email);
+                }
+            }
             closeWindow();
         } else {
             lblError.setText("Kullanıcı bulunamadı. Kayıt olunuz.");
         }
     }
-
 
     @FXML
     private void onCancelClick() {
